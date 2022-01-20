@@ -174,7 +174,7 @@ app.js
 --------------
 <br /><br />
 
-# Trello Coding
+# react-beautiful-dnd
 
 > react-beautiful-dnd를 이용해서 DragandDrop 기능 구현하기
 
