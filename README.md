@@ -207,7 +207,18 @@ app.js
 
     const App = () => {
 
-        const onDragEnd = () => {}
+        //드래그가 끝났을때 실행되는 함수
+        const onDragEnd = (info) => {
+            
+            const { destination, source} = info;
+
+            // source 옮겨지는 대상에 관한 정보
+            // destination 대상이 가려는 장소에 관한 정보
+            // source.indx => 드래그 하는 인덱스
+            // destination.index => 드롭하는 곳의 index    
+
+            //위의 정보를 토대로 원하는 로직은 구현하면 된다. 
+        }
 
         return (
             <DragDropContext onDragEnd={onDragEnd}>
@@ -249,4 +260,43 @@ app.js
             </DragDropContext>
         );
     }
+```
+
+# gh-pages를 통해서 배포하는 법
+
+> gh-pages를 이용하면 직접 브랜치를 나누지않고 간단하게 깃허브 배포를 할 수 있다.
+
+<br />
+
+```
+    npm install gh-pages
+```
+
+<br />
+
+> package.json 파일에 설정을 해준다.
+
+<br />
+
+```
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build"
+    },
+    ...
+    "homepage": "https://github.com/깃허브아이디/레파지토리이름"
+```
+
+<br />
+
+> npm 명령어로 실행 시켜준다. 
+
+<br />
+
+```
+    npm run deploy
 ```

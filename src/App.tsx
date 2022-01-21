@@ -25,7 +25,6 @@ function App() {
     // destination.index => 드롭하는 곳의 index    
 
     const { destination, source} = info;
-    console.log(destination, source);
 
     if(!destination) return;
 
