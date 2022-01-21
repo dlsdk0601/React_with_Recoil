@@ -288,7 +288,7 @@ app.js
         "deploy": "gh-pages -d build"
     },
     ...
-    "homepage": "https://github.com/깃허브아이디/레파지토리이름"
+    "homepage": "https://깃허브아이디.github.io/레파지토리이름"
 ```
 
 <br />
