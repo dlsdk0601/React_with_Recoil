@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ITodo, toDoState } from "../atoms";
 import { useForm } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
 import DraggableCard from "./DraggableCard";
@@ -28,17 +28,22 @@ const Board = ({boardId, toDos}: BoardProps) => {
         }
 
         setToDos( prev => {
-            return {
+
+            const obj = {
                 ...prev,
                 [boardId]: [
                     ...prev[boardId],
                     newToDo
                 ]
-            }
+            };
+            localStorage.setItem("toDos", JSON.stringify(obj));
+
+            return obj;
         });
 
         setValue("toDo", "");
     }
+
 
     return (
         <Wrapper>

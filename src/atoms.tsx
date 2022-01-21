@@ -5,7 +5,7 @@ export interface ITodo{
     text: string;
 }
 
-interface IToDoState {
+export interface IToDoState {
     [key: string]: ITodo[];
 }
 
