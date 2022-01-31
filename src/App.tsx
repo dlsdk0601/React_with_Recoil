@@ -1,14 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from 'recoil';
-import { IToDoState, toDoState } from './atoms';
+import { ITodo, IToDoState, toDoState } from './atoms';
 import Board from './components/Board';
 import { stringify } from 'querystring';
+import { useForm } from 'react-hook-form';
 
 interface ITrashProps{
   isDraggingOver: boolean;
   draggingFromThisWith: boolean;
+}
+
+interface ICate {
+  cate: string;
 }
 
 function App() {
@@ -93,8 +98,8 @@ function App() {
 
     const def = {
       "To Do": [],
-      Doing: [],
-      Done: []
+      // Doing: [],
+      // Done: []
     }
 
     const data: string = localStorage.getItem("toDos") || JSON.stringify(def);
@@ -106,34 +111,68 @@ function App() {
       }
     })
   }, []);
+  const { register, handleSubmit, setValue } = useForm<ICate>();
+
+  const addCategory = ({cate}: ICate) => {
+    
+    setValue("cate", "");
+
+    setToDos( old => {
+      const newArr = {
+        [cate]: []
+      }
+
+      return {
+        ...old,
+        ...newArr
+      }
+    })
+  }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Wrapper>
-        <Boards>
-          {
-            Object.keys(toDos).map(boardId => <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />)
-          }
-        </Boards>
-        <Droppable droppableId='trash'>
-          {
-            (magic, snapshot) => <Trash 
-              isDraggingOver={snapshot.isDraggingOver}
-              draggingFromThisWith={Boolean(snapshot.draggingFromThisWith)}
-              ref={magic.innerRef}
-              {...magic.droppableProps}>
-                <p>Trash</p>
-              </Trash>
-          }
-        </Droppable>
-      </Wrapper>
-    </DragDropContext>
+    <>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Wrapper>
+          <CateForm onSubmit={handleSubmit(addCategory)}>
+            <CateInput {...register("cate", { required: true})} type="text" placeholder='write a new Caterogy more' />
+          </CateForm>
+          <Boards>
+            {
+              Object.keys(toDos).map(boardId => <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />)
+            }
+          </Boards>
+          <Droppable droppableId='trash'>
+            {
+              (magic, snapshot) => <Trash 
+                isDraggingOver={snapshot.isDraggingOver}
+                draggingFromThisWith={Boolean(snapshot.draggingFromThisWith)}
+                ref={magic.innerRef}
+                {...magic.droppableProps}>
+                  <p>Trash</p>
+                </Trash>
+            }
+          </Droppable>
+        </Wrapper>
+      </DragDropContext>
+    </>
   );
 }
 
+const CateInput = styled.input`
+  display: block;
+  margin: 0 auto;
+  width: 35%;
+
+`
+
+const CateForm = styled.form`
+  width: 100%;
+  height: 50px;
+`
+
 const Trash = styled.div<ITrashProps>`
   width: 80%;
-  height: 150px;
+  height: 80px;
   background-color: ${props => props.isDraggingOver ? "gray" : "black"};
   opacity: 0.5;
   margin-top: 20px;

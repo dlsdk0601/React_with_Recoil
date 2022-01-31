@@ -13,7 +13,7 @@ export const toDoState = atom<IToDoState>({
     key: "toDo",
     default: {
         "To Do": [],
-        Doing: [],
-        Done: []
+        // Doing: [],
+        // Done: []
     }
 })
